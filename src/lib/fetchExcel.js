@@ -1,5 +1,23 @@
 import * as XLSX from 'xlsx';
- export default async function readExcelFromUrl(url) {
+
+ export default async function readExcelFromUrl() {
+
+   let config = localStorage.getItem("config");
+   if(!config)return;
+   
+   
+   
+   
+   
+   config = JSON.parse(config);
+   const timeRow = config.timeRow;
+   const timeColumn = config.timeColumn;
+   const sectionColumn = config.sectionColumn;
+   const semesterColumn = config.semesterColumn;
+   const url = config.url;
+   
+
+
     let times = [];
     let data = [];
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
@@ -35,38 +53,39 @@ import * as XLSX from 'xlsx';
   
         // Process the sheet data 
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: null, header: 1 });
-        // console.log('Sheet Data:', jsonData);
+        //console.log('Sheet Data:', jsonData);
         // getting timespans
         if(times.length==0) 
         {  
-              jsonData[1].forEach((data, key) => {if (key >= 3) times.push(data);});
+              jsonData[timeRow].forEach((data, key) => {if (key >= timeColumn) times.push(data);});
         }
         
         let sems = {};
-        let lastSemister = null;
+        let lastSemester = null;
   
         // traversing into rows
-        jsonData.forEach((row, rk) => {
+        jsonData.some((row, rk) => {
           //traversing into cols
-          if (rk > 1 && rk <= 42) {
+          if (rk > timeRow) {
+            if(row[sectionColumn]==null)return true;
             let newSemesterSarting = true;
             let sec = {};
             let sub = [];
             row.forEach((col, ck) => {
-              if (ck == 1 && col == null) newSemesterSarting = false;
-              if (ck >= 3) {
+              if (ck == semesterColumn && col == null) newSemesterSarting = false;
+              if (ck >= timeColumn) {
                 let temp = [col];
                 temp.push((merged[rk] && (ck in merged[rk])) ? merged[rk][ck] : 1);
                 sub.push(temp);
               }
             })
-            sec[row[2]] = sub;
+            sec[row[sectionColumn]] = sub;
             if (newSemesterSarting) {
-              lastSemister = row[1];
-              sems[lastSemister] = sec;
+              lastSemester = row[semesterColumn];
+              sems[lastSemester] = sec;
             }
             else {
-              sems[lastSemister] = { ...sems[lastSemister], ...sec }
+              sems[lastSemester] = { ...sems[lastSemester], ...sec }
             }
   
           }
