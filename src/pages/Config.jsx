@@ -12,7 +12,7 @@ export default function Config() {
             "timeColumn" : 3,
             "sectionColumn" : 2,
             "semesterColumn" : 1,
-            "url": 'https://docs.google.com/spreadsheets/u/0/d/1BOq80g5PyE9S0WXIqEc8vmPaps_4w_BZ79sBEDD_HbY/export?format=xlsx',
+            "url": 'https://docs.google.com/spreadsheets/d/1BOq80g5PyE9S0WXIqEc8vmPaps_4w_BZ79sBEDD_HbY/',
         }
   const [currentConfig, setCurrentConfig] = useState(defaultConfig);
   const [data, setData] = useState(null);
@@ -59,13 +59,20 @@ export default function Config() {
       "semesterColumn" : parseInt(document.querySelector("[name='semesterColumn']").value),
   }
   localStorage.setItem("config", JSON.stringify(temp));
-  toast.success("Configuration saved!");
+  toast.success("Configuration saved!",{
+    autoClose: 1000,
+    onClose: () => navigate(0)
+  });
   }
 
   function saveDefault()
   {
     localStorage.setItem("config", JSON.stringify(defaultConfig));
-    toast.success("Configuration restored to default!");
+    toast.success("Configuration restored to default", {
+      autoClose: 1000,
+      onClose: () => navigate(0)
+    });
+    
   }
 
   function sectionGenerator()
@@ -115,27 +122,27 @@ export default function Config() {
   <div className="bg-teal-500 p-4">
     <label
       >Sheet URL:
-      <textarea className="w-full bg-teal-400 p-2" defaultValue={currentConfig.url} name='url'></textarea>
+      <textarea className="w-full bg-teal-400 p-2" onChange={(e)=>setCurrentConfig(p=>{return {...p,url: e.target.value}})} value={currentConfig.url} name='url'></textarea>
     </label>
 
     <label
       >Time Row:
-      <input type="number" className="w-full bg-teal-400 p-2" defaultValue={currentConfig.timeRow} name='timeRow'/>
+      <input type="number" className="w-full bg-teal-400 p-2" onChange={(e)=>setCurrentConfig(p=>{return {...p,timeRow: e.target.value}})} value={currentConfig.timeRow} name='timeRow'/>
     </label>
 
     <label
       >Time Column:
-      <input type="number" className="w-full bg-teal-400 p-2" defaultValue={currentConfig.timeColumn} name='timeColumn'/>
+      <input type="number" className="w-full bg-teal-400 p-2" onChange={(e)=>setCurrentConfig(p=>{return {...p,timeColumn: e.target.value}})} value={currentConfig.timeColumn} name='timeColumn'/>
     </label>
 
     <label
       >Section Column:
-      <input type="number" className="w-full bg-teal-400 p-2" defaultValue={currentConfig.sectionColumn} name='sectionColumn'/>
+      <input type="number" className="w-full bg-teal-400 p-2" onChange={(e)=>setCurrentConfig(p=>{return {...p,sectionColumn: e.target.value}})} value={currentConfig.sectionColumn} name='sectionColumn'/>
     </label>
 
     <label
       >Semester Column:
-      <input type="number" className="w-full bg-teal-400 p-2" defaultValue={currentConfig.semesterColumn} name='semesterColumn'/>
+      <input type="number" className="w-full bg-teal-400 p-2" onChange={()=>{}} value={currentConfig.semesterColumn} name='semesterColumn'/>
     </label>
 
     <div className="mt-4 flex justify-center gap-2"><button className="rounded-xl bg-green-300 px-3 py-1" onClick={()=>saveConfig()}>💾 Save</button> <button className="rounded-xl bg-green-300 px-3 py-1" onClick={()=>saveDefault()}>↩️ Deafult</button></div>

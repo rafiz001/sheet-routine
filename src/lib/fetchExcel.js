@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import * as XLSX from 'xlsx';
 
  export default async function readExcelFromUrl() {
@@ -14,16 +15,21 @@ import * as XLSX from 'xlsx';
    const timeColumn = config.timeColumn;
    const sectionColumn = config.sectionColumn;
    const semesterColumn = config.semesterColumn;
-   const url = config.url;
-   
+   var urlTemp = config.url;
+   var urlID = null;
+   urlTemp = urlTemp.split("/");
+   for(var i = 0; i < urlTemp.length; i++)
+   {
+    if(urlTemp[i]=="d"){ urlID = urlTemp[i+1]; break; }
+   }
 
-
+   if(!urlID) {toast.error("Invalid URL provided"); }
     let times = [];
     let data = [];
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
     try {
       // Fetch the file from the URL
-      const response = await fetch(url);
+      const response = await fetch("https://docs.google.com/spreadsheets/u/0/d/"+urlID+"/export?format=xlsx");
   
       if (!response.ok) {
         throw new Error(`Failed to fetch file: ${response.statusText}`);
