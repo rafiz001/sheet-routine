@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import readExcelFromUrl from '../lib/fetchExcel';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
-export default function Routine() {
+export default function Routine({sorry}) {
     const once = useRef(false);
-    const [data, setData] = useState(null);
+    const [data, setData] = useOutletContext();
     const navigate = useNavigate();
     const [selectedClass, setSelectedClass] = useState({semester: '', section: ''});
     
@@ -25,15 +25,15 @@ export default function Routine() {
     }
     else navigate("/config");
       
-      readExcelFromUrl().then((output)=>{setData(output);console.log(output)});
+    
     }, [])
 
   
   
   return (
     <>
-    <div className="text-center text-white">Showing Semester: {selectedClass.semester} Section: {selectedClass.section}</div>
-{ data && data.days.map((day, dayKey)=><>
+    <div class="my-1 flex  rounded-xl bg-teal-800 p-2 text-center text-white justify-center">Showing Semester: {selectedClass.semester} Section: {selectedClass.section}</div>
+{(selectedClass.semester!='' && data) && data.days.map((day, dayKey)=><>
   <div className="mt-5 rounded-t-xl bg-teal-800 p-4 text-center text-white" key={dayKey}>{day}</div>
   <div className="bg-teal-500 p-4">
   

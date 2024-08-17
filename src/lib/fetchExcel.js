@@ -98,7 +98,7 @@ import * as XLSX from 'xlsx';
         })
         data.push(sems);
       })
-      const output = { "data": data,"times": times,"days": days };
+      const output = { "data": data,"times": times,"days": days, "updated": (new Date()).getTime() };
       return output;
   
     } catch (error) {

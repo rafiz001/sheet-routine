@@ -1,21 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react'
 import readExcelFromUrl from '../lib/fetchExcel';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
+export const defaultConfig = 
+{
+    "timeRow" : 1,
+    "timeColumn" : 3,
+    "sectionColumn" : 2,
+    "semesterColumn" : 1,
+    "url": 'https://docs.google.com/spreadsheets/d/1BOq80g5PyE9S0WXIqEc8vmPaps_4w_BZ79sBEDD_HbY/',
+}
 export default function Config() {
   const navigate = useNavigate();
   const once = useRef(false);
-  const defaultConfig = 
-        {
-            "timeRow" : 1,
-            "timeColumn" : 3,
-            "sectionColumn" : 2,
-            "semesterColumn" : 1,
-            "url": 'https://docs.google.com/spreadsheets/d/1BOq80g5PyE9S0WXIqEc8vmPaps_4w_BZ79sBEDD_HbY/',
-        }
+
   const [currentConfig, setCurrentConfig] = useState(defaultConfig);
-  const [data, setData] = useState(null);
+  const [data, setData] = useOutletContext();
   const [selectedClass, setSelectedClass] = useState({semester: '', section: ''});
   const [section, setSection] = useState(null);
   useEffect(() => {
@@ -25,6 +25,7 @@ export default function Config() {
     let config = localStorage.getItem("config");
     if(!config){
       localStorage.setItem("config", JSON.stringify(defaultConfig))
+      navigate(0);
     }
     else{
       setCurrentConfig(JSON.parse(config));
@@ -35,17 +36,16 @@ export default function Config() {
     if(class_)
     {
         setSelectedClass(JSON.parse(class_));
+        
     }
 
 
-    
-    
-    readExcelFromUrl().then((output)=>{setData(output);console.log(output);});
+
   }, [])
 
   useEffect(()=>{
     if(data)sectionGenerator();
-  },[data])
+  },[selectedClass,data])
 
 
   function saveConfig() 
@@ -77,8 +77,10 @@ export default function Config() {
 
   function sectionGenerator()
   {
-    const semester = document.querySelector("[name='semester']").value;
-    if(semester != "...") setSection(Object.keys(data.data[0][semester]));
+
+    const semesterr = document.querySelector("[name='semester']").value;
+    if(semesterr != "...") setSection(Object.keys(data.data[0][semesterr]));
+   
   }
 
   function saveClass()
@@ -91,12 +93,13 @@ export default function Config() {
   return (
     <>
     {/*Design:  https://play.tailwindcss.com/14BHbypVbt */}
+    <div class="my-1 flex  rounded-xl bg-teal-800 p-0 text-center text-white "><a className='p-2 w-full underline text-center' href="https://t.me/sheet_routine">Join Telegram Channel for offline app, updates, bug report</a></div>
     <div className="mt-5 rounded-t-xl bg-teal-800 p-4 text-center text-white">Choose Your Class</div>
   <div className="bg-teal-500 p-4">
     <label
       >Semester:
 
-      <select onInput={()=>sectionGenerator()} name="semester" className="w-full bg-teal-400 p-2">
+      <select onChange={()=>sectionGenerator()} name="semester" className="w-full bg-teal-400 p-2">
         
       {data && <option value="...">Select Semester</option>}
         {data ? Object.keys(data.data[0]).map((value)=><>
@@ -145,7 +148,7 @@ export default function Config() {
       <input type="number" className="w-full bg-teal-400 p-2" onChange={()=>{}} value={currentConfig.semesterColumn} name='semesterColumn'/>
     </label>
 
-    <div className="mt-4 flex justify-center gap-2"><button className="rounded-xl bg-green-300 px-3 py-1" onClick={()=>saveConfig()}>💾 Save</button> <button className="rounded-xl bg-green-300 px-3 py-1" onClick={()=>saveDefault()}>↩️ Deafult</button></div>
+    <div className="mt-4 flex justify-center gap-2"><button className="rounded-xl bg-green-300 px-3 py-1" onClick={()=>saveConfig()}>💾 Save</button> <button className="rounded-xl bg-green-300 px-3 py-1" onClick={()=>saveDefault()}>↩️ Default</button></div>
   </div>
     </>
   )
