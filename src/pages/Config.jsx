@@ -2,19 +2,12 @@ import React, { useEffect, useRef, useState } from 'react'
 import readExcelFromUrl from '../lib/fetchExcel';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { toast } from 'react-toastify';
-export const defaultConfig = 
-{
-    "timeRow" : 1,
-    "timeColumn" : 3,
-    "sectionColumn" : 2,
-    "semesterColumn" : 1,
-    "url": 'https://docs.google.com/spreadsheets/d/1BOq80g5PyE9S0WXIqEc8vmPaps_4w_BZ79sBEDD_HbY/',
-}
+import defaultConfig from './defaultConfig';
 export default function Config() {
   const navigate = useNavigate();
   const once = useRef(false);
 
-  const [currentConfig, setCurrentConfig] = useState(defaultConfig);
+  const [currentConfig, setCurrentConfig] = useState(defaultConfig());
   const [data, setData] = useOutletContext();
   const [selectedClass, setSelectedClass] = useState({semester: '', section: ''});
   const [section, setSection] = useState(null);
@@ -24,7 +17,8 @@ export default function Config() {
     //getting config from localstorage
     let config = localStorage.getItem("config");
     if(!config){
-      localStorage.setItem("config", JSON.stringify(defaultConfig))
+
+      localStorage.setItem("config", JSON.stringify(defaultConfig()))
       navigate(0);
     }
     else{
@@ -67,7 +61,7 @@ export default function Config() {
 
   function saveDefault()
   {
-    localStorage.setItem("config", JSON.stringify(defaultConfig));
+    localStorage.setItem("config", JSON.stringify(defaultConfig()));
     toast.success("Configuration restored to default", {
       autoClose: 1000,
       onClose: () => navigate(0)

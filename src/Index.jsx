@@ -4,6 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './styles.css';
 import readExcelFromUrl from "./lib/fetchExcel";
+import defaultConfig from "./pages/defaultConfig";
 
 const Index = () => {
   const once = useRef(false);
@@ -14,14 +15,20 @@ const Index = () => {
   useEffect(() => {
     if (once.current) return;
     once.current = true;
+    let config = localStorage.getItem("config");
+    if(!config){
+      localStorage.setItem("config", JSON.stringify(defaultConfig()))
+    }
+
     let datas = localStorage.getItem("datas")
-    if(datas && datas!="undefined")
+    if(datas )
     {
+       
         setData(JSON.parse(datas));
     }
     else
     {
-      readExcelFromUrl().then((output)=>{setData(output);localStorage.setItem("datas", JSON.stringify(output));console.log(output)});
+      readExcelFromUrl().then((output)=>{if(output!==undefined){setData(output);localStorage.setItem("datas", JSON.stringify(output));console.log(output)}else{window.location.reload()}});
     }
 
   }, [])
@@ -29,7 +36,7 @@ const Index = () => {
   function syncNow()
   {
     localStorage.removeItem("datas");
-    navigate(0);
+    window.location.reload();
   }
   return (<>
   <ToastContainer />
