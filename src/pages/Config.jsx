@@ -96,8 +96,8 @@ export default function Config() {
       <select onChange={()=>sectionGenerator()} name="semester" className="w-full bg-teal-400 p-2">
         
       {data && <option value="...">Select Semester</option>}
-        {data ? Object.keys(data.data[0]).map((value)=><>
-          <option selected={value === selectedClass.semester} value={value}>{value}</option>
+        {data ? Object.keys(data.data[0]).map((value,key)=><>
+          <option key={key} selected={value === selectedClass.semester} value={value}>{value}</option>
         </>):<option value="...">Loading...</option>}
       </select> 
     </label>
@@ -107,7 +107,7 @@ export default function Config() {
 
       <select className="w-full bg-teal-400 p-2" name='section'>
           {section && section.map((value,key)=><>
-          <option selected={value === selectedClass.section} value={value}>{value}</option>
+          <option key={key} selected={value === selectedClass.section} value={value}>{value}</option>
         </>)}
       </select>
     </label>

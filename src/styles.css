@@ -21,3 +21,20 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+@layer base
+{
+    tr 
+    {
+        @apply hover:bg-teal-800 hover:text-white bg-teal-400;
+    }
+    th
+    {
+        @apply bg-teal-800 p-2 text-center text-white border sticky -top-0.5 left-0 ;    
+    }
+    td
+    {
+        @apply  p-2 text-center border;  
+    }
+    
+}
+

@@ -8,6 +8,7 @@ import {
   createHashRouter,
   RouterProvider,
 } from "react-router-dom";
+import Full from "./pages/Full.jsx";
 
 
 const router = createHashRouter([
@@ -19,6 +20,10 @@ const router = createHashRouter([
       {
         path: "/",
         element: <Routine />,
+      },
+      {
+        path: "full",
+        element: <Full />,
       },
       {
         path: "config",

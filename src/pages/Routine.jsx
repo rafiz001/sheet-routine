@@ -7,8 +7,9 @@ export default function Routine({sorry}) {
     const [data, setData] = useOutletContext();
     const navigate = useNavigate();
     const [selectedClass, setSelectedClass] = useState({semester: '', section: ''});
-    
-
+    //const date = new Date((new Date).setDate(16));
+    const today = (new Date).getDay();
+    const nextDay = today>=4?0:today+1
     
     useEffect(() => {
       if (once.current) return;
@@ -32,14 +33,14 @@ export default function Routine({sorry}) {
   
   return (
     <>
-    <div class="my-1 flex  rounded-xl bg-teal-800 p-2 text-center text-white justify-center">Showing Semester: {selectedClass.semester} Section: {selectedClass.section}</div>
+    <div className="my-1 flex  rounded-xl bg-teal-800 p-2 text-center text-white justify-center">Showing Semester: {selectedClass.semester} Section: {selectedClass.section}</div>
 {(selectedClass.semester!='' && data) && data.days.map((day, dayKey)=><>
-  <div className="mt-5 rounded-t-xl bg-teal-800 p-4 text-center text-white" key={dayKey}>{day}</div>
+  <div className="mt-5 rounded-t-xl bg-teal-800 p-4 text-center text-white" key={dayKey}>{today==dayKey && '✅'} {nextDay==dayKey && '⬇️'} {day}</div>
   <div className="bg-teal-500 p-4">
   
       {data.data[dayKey][selectedClass.semester][selectedClass.section].map((sub,subKey)=><>
       {sub[0] &&
-                <div className="mt-1 flex  gap-2">
+                <div className="mt-1 flex  gap-2" key={subKey}>
                   <div className="bg-teal-400 p-1 w-full text-right content-center">{data.times[subKey]}{(sub[1]>1) && <><hr />{data.times[subKey+sub[1]-1]}</>}</div>
                   <div className="flex items-center bg-teal-400 p-1 w-full text-left content-center">{sub[0]}</div>
                 </div>
@@ -51,13 +52,13 @@ export default function Routine({sorry}) {
 }
 {!data &&
 <>
-<div class=" mt-5 rounded-t-xl bg-teal-800 p-4 text-center text-white flex justify-center" ><div class="animate-pulse bg-teal-400 p-1 w-32  h-7"></div></div>
-  <div class="bg-teal-500 p-4">
+<div className=" mt-5 rounded-t-xl bg-teal-800 p-4 text-center text-white flex justify-center" ><div className="animate-pulse bg-teal-400 p-1 w-32  h-7"></div></div>
+  <div className="bg-teal-500 p-4">
   
 
-                <div class=" mt-1 flex  gap-2">
-                  <div class="animate-pulse bg-teal-400 p-1 w-full text-right content-center h-20"></div>
-                  <div class="animate-pulse flex items-center bg-teal-400 p-1 w-full text-left content-center h-20"></div>
+                <div className=" mt-1 flex  gap-2">
+                  <div className="animate-pulse bg-teal-400 p-1 w-full text-right content-center h-20"></div>
+                  <div className="animate-pulse flex items-center bg-teal-400 p-1 w-full text-left content-center h-20"></div>
                 </div>
 
 

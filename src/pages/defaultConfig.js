@@ -4,7 +4,7 @@ export default function defaultConfig(){
         "timeColumn" : 3,
         "sectionColumn" : 2,
         "semesterColumn" : 1,
-        "url": 'https://docs.google.com/spreadsheets/d/1BOq80g5PyE9S0WXIqEc8vmPaps_4w_BZ79sBEDD_HbY/',
+        "url": 'https://docs.google.com/spreadsheets/d/1vJQVPX0-YypjwBAoiFcMNofKR91X8Zt57NAKlXrUre4/',
     };
     return  config;
 }

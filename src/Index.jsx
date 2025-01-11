@@ -11,7 +11,7 @@ const Index = () => {
   const [data, setData] = useState(null);
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   const navigate = useNavigate();
-
+  const [netLoader,setNetLoader] = useState('Sync Now');
   useEffect(() => {
     if (once.current) return;
     once.current = true;
@@ -28,22 +28,54 @@ const Index = () => {
     }
     else
     {
-      readExcelFromUrl().then((output)=>{if(output!==undefined){setData(output);localStorage.setItem("datas", JSON.stringify(output));console.log(output)}else{window.location.reload()}});
+      readExcelFromUrl().then((output)=>
+        {
+          if(output!==undefined)
+            {
+              setData(output);
+              localStorage.setItem("datas", JSON.stringify(output));
+              console.log(output);
+            }
+          else
+          {
+            toast.error("Unable to fetch file!");
+            //window.location.reload()
+          }});
     }
 
   }, [])
-
-  function syncNow()
+  const checkInternetConnection = async () => {
+    try {
+      const response = await fetch('https://www.google.com/favicon.ico', {
+        method: 'HEAD', 
+        mode: 'no-cors', 
+      });
+  
+      return true;
+    } catch (error) {
+      console.error('No internet connection:', error);
+      return false;
+    }
+  };
+  
+  async function syncNow()
   {
-    localStorage.removeItem("datas");
-    window.location.reload();
+    setNetLoader('Pinging')
+    const online =await checkInternetConnection();
+    if(online)
+    {
+      localStorage.removeItem("datas");
+      window.location.reload();
+    }
+    else toast.error("Maybe internet connection issue.");
+    setNetLoader('Sync Now')
   }
   return (<>
   <ToastContainer />
-  <div className="flex flex-col">
-    <div className="flex justify-around bg-teal-900 py-2 text-white">
-      <div className="text-2xl"><img src="./img/SheetRoutine.svg" alt="Sheet Rutine" className="h-full w-10" /></div>
-      <div className="flex gap-7 p-2">
+  <div className=" flex flex-col mb-10">
+    <div className="flex justify-around bg-teal-900 py-2 text-white fixed left-0 bottom-0 w-full">
+      
+      
         
         <NavLink to={`/`} 
         className={({ isActive, isPending }) =>
@@ -55,6 +87,21 @@ const Index = () => {
         }
       
         >Routine</NavLink>
+
+
+        <NavLink to={`full`} 
+        className={({ isActive, isPending }) =>
+          isActive
+            ? " border-b-2 "
+            : isPending
+            ? "pending"
+            : ""
+        }
+      
+        >Full Routine</NavLink>
+
+
+
         <NavLink to={`config`} 
         className={({ isActive, isPending }) =>
           isActive
@@ -65,15 +112,15 @@ const Index = () => {
         }
       
         >Config</NavLink>
-      </div>
+      
     </div>
     <div className="pb-7 bg-teal-950 px-5 md:px-40 xl:px-72">
 {data && 
     
-    <div class="my-1 flex justify-between rounded-xl bg-teal-800 p-4 text-center text-black">
-  <div class="p-1 text-white">Synced at {new Date(data.updated).getDate()} {months[new Date(data.updated).getMonth()]} {new Date(data.updated).getHours()}:{new Date(data.updated).getMinutes()}</div>
+    <div className="my-1 flex justify-between rounded-xl bg-teal-800 p-4 text-center text-black">
+  <div className="p-1 text-white">Synced at {new Date(data.updated).getDate()} {months[new Date(data.updated).getMonth()]} {new Date(data.updated).getHours()}:{new Date(data.updated).getMinutes()}</div>
 
-  <button onClick={()=>syncNow()} class="rounded-xl bg-green-300 px-3 py-1">Sync Now</button>
+  <button onClick={()=>syncNow()} className="rounded-xl bg-green-300 px-3 py-1">{netLoader}</button>
 </div>}
     <Outlet context={[data, setData]}/>
       

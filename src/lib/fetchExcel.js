@@ -30,6 +30,7 @@ import * as XLSX from 'xlsx';
     try {
       // Fetch the file from the URL
       const response = await fetch("https://docs.google.com/spreadsheets/u/0/d/"+urlID+"/export?format=xlsx");
+      // const response = await fetch("http://localhost:9000/Class Routine of Summer 2024 (extended time).xlsx");
   
       if (!response.ok) {
         throw new Error(`Failed to fetch file: ${response.statusText}`);
