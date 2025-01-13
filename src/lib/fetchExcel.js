@@ -99,7 +99,22 @@ import * as XLSX from 'xlsx';
         })
         data.push(sems);
       })
-      const output = { "data": data,"times": times,"days": days, "updated": (new Date()).getTime() };
+      const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets["Information"], { defval: null, header: 1 });
+      //console.log(jsonData);
+      let teacherStarted=false;
+      let teachers = {};
+      jsonData.every(r=>
+        {
+          if(teacherStarted)
+          {
+            if(r[0]==null)return false;
+            teachers={...teachers, [r[0].trim()]:r[1].trim()}
+          }
+          if(r[0]=="Teacher's Initial") teacherStarted=true;
+          return true;
+        })
+        
+      const output = {  data, times, days, teachers, "updated": (new Date()).getTime() };
       return output;
   
     } catch (error) {

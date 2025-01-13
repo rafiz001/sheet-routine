@@ -13,8 +13,9 @@ const Index = () => {
   const navigate = useNavigate();
   const [netLoader,setNetLoader] = useState('Sync Now');
   useEffect(() => {
-    if (once.current) return;
-    once.current = true;
+    /*if (once.current) return;
+    once.current = true;*/
+
     let config = localStorage.getItem("config");
     if(!config){
       localStorage.setItem("config", JSON.stringify(defaultConfig()))
@@ -66,6 +67,7 @@ const Index = () => {
     {
       localStorage.removeItem("datas");
       window.location.reload();
+      location.reload();
     }
     else toast.error("Maybe internet connection issue.");
     setNetLoader('Sync Now')

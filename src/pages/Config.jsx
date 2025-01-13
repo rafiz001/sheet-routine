@@ -55,7 +55,7 @@ export default function Config() {
   localStorage.setItem("config", JSON.stringify(temp));
   toast.success("Configuration saved!",{
     autoClose: 1000,
-    onClose: () => navigate(0)
+    onClose: () => {navigate(0)}
   });
   }
 
@@ -64,7 +64,7 @@ export default function Config() {
     localStorage.setItem("config", JSON.stringify(defaultConfig()));
     toast.success("Configuration restored to default", {
       autoClose: 1000,
-      onClose: () => navigate(0)
+      onClose: () => {navigate("/")}
     });
     
   }
@@ -83,11 +83,21 @@ export default function Config() {
     localStorage.setItem("class", JSON.stringify(temp));
     navigate("/");
   }
+  function clearStorage()
+  {
+    
+    localStorage.clear();
+    toast.success("Configuration cleared.", {
+      autoClose: 1000,
+      onClose: () => {navigate("/")}
+    });
+  }
 
   return (
     <>
     {/*Design:  https://play.tailwindcss.com/14BHbypVbt */}
     <div class="my-1 flex  rounded-xl bg-teal-800 p-0 text-center text-white "><a className='p-2 w-full underline text-center' href="https://t.me/sheet_routine">Join Telegram Channel for offline app, updates, bug report</a></div>
+    
     <div className="mt-5 rounded-t-xl bg-teal-800 p-4 text-center text-white">Choose Your Class</div>
   <div className="bg-teal-500 p-4">
     <label
@@ -144,6 +154,8 @@ export default function Config() {
 
     <div className="mt-4 flex justify-center gap-2"><button className="rounded-xl bg-green-300 px-3 py-1" onClick={()=>saveConfig()}>💾 Save</button> <button className="rounded-xl bg-green-300 px-3 py-1" onClick={()=>saveDefault()}>↩️ Default</button></div>
   </div>
+  <div class="my-1 flex  rounded-xl bg-teal-800 p-0 text-center text-black flex justify-center "><button className="rounded-xl bg-green-300 px-3 py-1" onClick={()=>clearStorage()}>❌ Clear Memory</button></div>
+    
     </>
   )
 }

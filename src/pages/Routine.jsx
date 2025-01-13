@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import readExcelFromUrl from '../lib/fetchExcel';
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import CoursePopUp from './CoursePopUp.jsx';
 
 export default function Routine({sorry}) {
     const once = useRef(false);
     const [data, setData] = useOutletContext();
     const navigate = useNavigate();
     const [selectedClass, setSelectedClass] = useState({semester: '', section: ''});
+    const [popup,setPopup] = useState(null);
     //const date = new Date((new Date).setDate(16));
     const today = (new Date).getDay();
     const nextDay = today>=4?0:today+1
@@ -42,7 +44,7 @@ export default function Routine({sorry}) {
       {sub[0] &&
                 <div className="mt-1 flex  gap-2" key={subKey}>
                   <div className="bg-teal-400 p-1 w-full text-right content-center">{data.times[subKey]}{(sub[1]>1) && <><hr />{data.times[subKey+sub[1]-1]}</>}</div>
-                  <div className="flex items-center bg-teal-400 p-1 w-full text-left content-center">{sub[0]}</div>
+                  <div onClick={()=>setPopup(sub[0])} className="flex items-center bg-teal-400 p-1 w-full text-left content-center cursor-pointer">{sub[0]}</div>
                 </div>
       }
       </>)}
@@ -65,8 +67,8 @@ export default function Routine({sorry}) {
   </div>
 </>
 }
-
-
+<CoursePopUp popup={popup} setPopup={setPopup} data={data}/>
+<div className="my-1 flex  rounded-xl bg-teal-800 p-2 text-center text-white justify-center">Tap on the courses to see its details.</div>
     </>
   )
 }

@@ -1,13 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
 import readExcelFromUrl from '../lib/fetchExcel';
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import CoursePopUp from './CoursePopUp.jsx';
 
 export default function Full({sorry}) {
     const once = useRef(false);
     const [data, setData] = useOutletContext();
     const navigate = useNavigate();
     const [selectedDays, setSelectedDays] = useState('---');
-    
+    const [popup,setPopup] = useState(null);
+
     let newDay=true,newSemester=true;
 
     
@@ -66,13 +68,13 @@ export default function Full({sorry}) {
       {data.data[selectedDays][semester][section].map((col,colKey)=><>
         
         {data.data[selectedDays][semester][section][colKey-1] && (data.data[selectedDays][semester][section][colKey-1][1]<=1) &&
-      <td colSpan={col[1]>1?col[1]:''}>{col[0]}</td>
+      <td  onClick={()=>setPopup(col[0])}  colSpan={col[1]>1?col[1]:''}>{col[0]}</td>
     }
 
     
 
-    {!data.data[selectedDays][semester][section][colKey-1]  &&
-      <td colSpan={col[1]>1?col[1]:''}>{col[0]}</td>
+    {!data.data[selectedDays][semester][section][colKey-1]  &&  
+      <td  onClick={()=>setPopup(col[0])}  colSpan={col[1]>1?col[1]:''}>{col[0]}</td>
     }
 
 
@@ -100,6 +102,8 @@ export default function Full({sorry}) {
 </>
 }
 </div>
+
+<CoursePopUp popup={popup} setPopup={setPopup}  data={data}/>
     </>
   )
 }
