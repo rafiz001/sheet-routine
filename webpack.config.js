@@ -14,12 +14,12 @@ module.exports = {
           loader: "babel-loader"
         }
       },
-       {
+      {
         test: /\.css$/,
         use: [
           MiniCssExtractPlugin.loader,
           "css-loader", "postcss-loader",
-          ],
+        ],
       },
     ]
   },
@@ -29,19 +29,20 @@ module.exports = {
       chunkFilename: "styles.css"
     }),
     new HtmlWebPackPlugin({
-    template: "./src/index.html",
-    filename: "./index.html"
-  }),
-  new CleanWebpackPlugin(),
-  new CopyPlugin({
-    patterns: [
-      { from: "./src/img", to: "./img" },
-    ],
-  }),
-  
-],
-output: {
-  path: path.resolve(__dirname, 'docs'), 
-  filename: 'bundle.[contenthash].js' 
-}
+      template: "./src/index.html",
+      filename: "./index.html"
+    }),
+    new CleanWebpackPlugin(),
+    new CopyPlugin({
+      patterns: [
+        { from: "./src/img", to: "./img" },
+        { from: "./src/privacy_policy.html", to: "./privacy_policy.html" },
+      ],
+    }),
+
+  ],
+  output: {
+    path: path.resolve(__dirname, 'docs'),
+    filename: 'bundle.[contenthash].js'
+  }
 };
