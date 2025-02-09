@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import readExcelFromUrl from '../lib/fetchExcel';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { popUpInfo } from './CoursePopUp.jsx';
+import  CoursePopUp from './CoursePopUp.jsx';
 
 export default function Routine({ sorry }) {
   const once = useRef(false);
   const [data, setData] = useOutletContext();
   const navigate = useNavigate();
   const [selectedClass, setSelectedClass] = useState({ semester: '', section: '' });
-  const [popup, setPopup] = useState(true);
+  const [popup, setPopup] = useState("");
   //const date = new Date((new Date).setDate(16));
   const today = (new Date).getDay();
   const nextDay = today >= 4 ? 0 : today + 1
@@ -42,12 +42,9 @@ export default function Routine({ sorry }) {
           {data.data[dayKey][selectedClass.semester][selectedClass.section].map((sub, subKey) => <>
             {sub[0] &&
               <div className="mt-1 flex  gap-2" key={subKey}>
-                <div className="bg-teal-400 p-1 flex-[1] text-right content-center">{data.times[subKey]}{(sub[1] > 1) && <><hr />{data.times[subKey + sub[1] - 1]}</>}</div>
-                <div onClick={() => setPopup(!popup)} className="flex-[4] items-center bg-teal-400 p-1 w-full text-center content-center cursor-pointer">
-                  {popup && <>
-                    { popUpInfo(sub[0],data,"course")}<hr className='border-teal-500' />
-                    { popUpInfo(sub[0], data, "teacher").map((v, k) => <span key={k}>({k + 1}) {v}<br /></span>)} <hr className='border-teal-500' />
-                    </>}
+                <div className="bg-teal-400 p-1  text-right content-center w-full">{data.times[subKey]}{(sub[1] > 1) && <><hr />{data.times[subKey + sub[1] - 1]}</>}</div>
+                <div onClick={() => setPopup(sub[0])} className="  bg-teal-400 p-1 w-full text-left content-center cursor-pointer">
+                  
                   {sub[0]}
 
                 </div>
@@ -73,8 +70,8 @@ export default function Routine({ sorry }) {
           </div>
         </>
       }
-      {/* <CoursePopUp popup={popup} setPopup={setPopup} data={data}/>
-<div className="my-1 flex  rounded-xl bg-teal-800 p-2 text-center text-white justify-center">Tap on the courses to see its details.</div> */}
+       <CoursePopUp popup={popup} setPopup={setPopup} data={data}/>
+<div className="my-1 flex  rounded-xl bg-teal-800 p-2 text-center text-white justify-center">Tap on the courses to see its details.</div> 
     </>
   )
 }

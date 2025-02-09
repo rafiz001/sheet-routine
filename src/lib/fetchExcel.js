@@ -15,6 +15,7 @@ import * as XLSX from 'xlsx';
    const timeColumn = config.timeColumn;
    const sectionColumn = config.sectionColumn;
    const semesterColumn = config.semesterColumn;
+   var lastRow=100;
    var urlTemp = config.url;
    var urlID = null;
    urlTemp = urlTemp.split("/");
@@ -55,8 +56,11 @@ import * as XLSX from 'xlsx';
             if (!(v.s.r in merged)) merged[v.s.r] = {};
             merged[v.s.r][v.s.c] = Math.abs(v.s.c - v.e.c) + 1;
           }
+          if (v.s.r != v.e.r && v.s.c==semesterColumn-1 && v.s.r==timeRow+1) {
+            lastRow=v.e.r;
+          }
         })
-        // console.log(merged);
+
   
         // Process the sheet data 
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: null, header: 1 });
@@ -69,12 +73,12 @@ import * as XLSX from 'xlsx';
         
         let sems = {};
         let lastSemester = null;
-  
+        // console.log("jsondata:", jsonData)
         // traversing into rows
         jsonData.some((row, rk) => {
           //traversing into cols
           if (rk > timeRow) {
-            if(row[sectionColumn]==null)return true;
+            if(rk>lastRow)return true;
             let newSemesterSarting = true;
             let sec = {};
             let sub = [];

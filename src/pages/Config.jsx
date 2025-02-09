@@ -64,7 +64,7 @@ export default function Config() {
     localStorage.setItem("config", JSON.stringify(temp));
     toast.success("Configuration saved!", {
       autoClose: 1000,
-      onClose: () => { navigate(0) }
+      onClose: () => { refreshFull()  }
     });
   }
 
@@ -72,7 +72,7 @@ export default function Config() {
     localStorage.setItem("config", JSON.stringify(defaultConfig()));
     toast.success("Configuration restored to default", {
       autoClose: 1000,
-      onClose: () => { navigate("/") }
+      onClose: () => { refreshFull()  }
     });
 
   }
@@ -93,8 +93,8 @@ export default function Config() {
 
     localStorage.clear();
     toast.success("Configuration cleared.", {
-      autoClose: 1000,
-      onClose: () => { navigate("/") }
+      autoClose: 500,
+      onClose: () => { refreshFull()  }
     });
   }
 

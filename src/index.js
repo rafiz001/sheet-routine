@@ -10,30 +10,36 @@ import {
 } from "react-router-dom";
 import Full from "./pages/Full.jsx";
 import Live from "./pages/Live.jsx";
+import ErrorBoundary from "./pages/ErrorBoundary.jsx";
 
 
 const router = createHashRouter([
   {
     path: "/",
     element: <Index/>,
-    
+    errorElement: <ErrorBoundary />,
     children: [
       {
         path: "/",
         element: <Routine />,
+        errorElement: <ErrorBoundary />,
       },
       {
         path: "full",
         element: <Full />,
+        errorElement: <ErrorBoundary />,
       },
       {
         path: "live",
         element: <Live />,
+        errorElement: <ErrorBoundary />,
       },
       {
         path: "config",
         element: <Config />,
+        errorElement: <ErrorBoundary />,
       },
+      
 
       
     ],

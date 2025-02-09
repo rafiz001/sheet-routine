@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import courses from "./../lib/courses.json"
+import { PiXCircle } from 'react-icons/pi';
 
-export function popUpInfo(raw,data,type="all") {
+ function popUpInfo(raw,data,type="all") {
   const courseA = raw.split("[")
   const temp = courseA[0].trim().split("-");
   let courseName = "";
@@ -32,21 +33,23 @@ function CoursePopUp({ popup, setPopup, data }) {
   return (
     <>
       {popup &&
-        <div className=' fixed top-0 left-0 w-[100vw] h-[100vh] flex justify-center items-center bg-[#000000dd]'>
-          <div className=''>
-            <div className=" mt-5 rounded-t-xl bg-teal-800 p-4 text-center text-white" >
-              {popup} <span onClick={() => setPopup(null)} className='p-1 rounded-full bg-teal-400 cursor-pointer'>❌</span>
+        <div className=' fixed top-0 left-0 w-[100vw] h-[100vh] flex justify-center bg-black/70 '>
+          <div className='w-[100vw] h-[50vh] mt-[50vh] md:px-40 ' >
+            <div className="  rounded-t-xl bg-teal-800 p-2 text-center text-white  flex justify-between items-center" >
+              <span></span>
+              Class Details <span onClick={() => setPopup(null)} className='p-1   cursor-pointer'><PiXCircle size={25}/></span>
 
             </div>
-            <div className="bg-teal-500 p-4">
+            <div className="bg-teal-500 p-1 h-full">
 
 
               <div className="mt-1 " >
 
-                <div className="  bg-teal-400 p-1 w-full text-left content-center">
+                <div className=" px-2 w-full h-[30vh] text-left content-center overflow-y-auto">
                   <strong>Course:</strong> <br />{popupInfo.course} <br />
                   <strong>Teacher:</strong> <br />
                   {popupInfo.teachers && popupInfo.teachers.map((v, k) => <>{k + 1}. {v}<br /></>)}
+                  <strong>Raw:</strong> <br /> {popup} <br/>
                 </div>
               </div>
 
