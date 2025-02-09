@@ -11,6 +11,17 @@ export default function Config() {
   const [data, setData] = useOutletContext();
   const [selectedClass, setSelectedClass] = useState({ semester: '', section: '' });
   const [section, setSection] = useState(null);
+
+
+  function refreshFull() {
+    if (typeof window.Android !== "undefined" && typeof window.Android.reloadWebView === "function") {
+      window.Android.reloadWebView();
+    }
+    else {
+      window.location.href=window.location.origin+window.location.pathname;
+      //location.reload();
+    }
+  }
   useEffect(() => {
     if (once.current) return;
     once.current = true;
@@ -76,7 +87,7 @@ export default function Config() {
   function saveClass() {
     const temp = { semester: document.querySelector("[name='semester']").value, section: document.querySelector("[name='section']").value };
     localStorage.setItem("class", JSON.stringify(temp));
-    navigate("/");
+    refreshFull();
   }
   function clearStorage() {
 
