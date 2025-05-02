@@ -3,9 +3,8 @@ import React, {  useState } from 'react'
 export default function Banner() {
   const isDarkMode = true;
   const title = "Free Palestine 🇵🇸";
-  const description = `Stand for humanity! Palestine has a right to defend itself. Together, we can put an end to the Gaza genocide. Let's unite to #SAVEGAZA and ensure that every life in this region has access to the most basic necessities.`;
-  const linkTo = "https://twitter.com/search?q=%23PalestineLivesMatter";
-  // ---- change the content above if you want to ----
+  const description = `Our project wholeheartedly and unequivocally supports Palestine in the face of challenges posed by the Israeli attacks. Help Palestine.`;
+  const linkTo = "https://github.com/Safouene1/support-palestine-banner/blob/master/Markdown-pages/Support.md";
 
   const flag = {
     red: "#E4312b",
