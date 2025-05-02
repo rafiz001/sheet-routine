@@ -7,7 +7,7 @@ import readExcelFromUrl from "./lib/fetchExcel";
 import defaultConfig from "./pages/defaultConfig";
 import { formatDistance } from "date-fns";
 import { PiBackpack, PiGearFine, PiGlobe } from "react-icons/pi";
-
+import Banner from "./pages/SaveGazza.jsx"
 
 const Index = () => {
   const once = useRef(false);
@@ -145,6 +145,7 @@ const Index = () => {
       className="refresh-container w-full fixed -top-10 flex justify-center -mt-10 m-auto "
       style={{ marginTop: pullChange || "" }}
     >
+ 
       <div className="refresh-icon p-2 rounded-full bg-teal-900">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -206,6 +207,7 @@ const Index = () => {
         </div>
       </div>
       <div className="pb-7 bg-teal-950 px-1 md:px-40 mb-20 xl:px-72">
+        <Banner/>
         {data &&
 
           <div className="my-1 flex justify-between items-center rounded-xl bg-teal-800 p-2 text-center text-black">

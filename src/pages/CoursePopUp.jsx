@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import courses from "./../lib/courses.json"
-import { PiXCircle } from 'react-icons/pi';
+import { PiArrowSquareOut, PiXCircle } from 'react-icons/pi';
 
  function popUpInfo(raw,data,type="all") {
   const courseA = raw.split("[")
@@ -11,6 +11,7 @@ import { PiXCircle } from 'react-icons/pi';
     const temp = courseA[0].trim().split(" ");
     courseName = temp[0] + " " + temp[1];
   }
+  if(type=="ccode") return courseName;
   if(type=="course") return courses[courseName];
   //console.log(courseName,"-", courses[courseName] )
   //const raw = "CSE-324[SHS] [NEW3](DSAL)"
@@ -21,7 +22,8 @@ import { PiXCircle } from 'react-icons/pi';
 }
 
 function CoursePopUp({ popup, setPopup, data }) {
-  const [popupInfo, setPopUpInfo] = useState({ course: null, teachers: null });
+  const [popupInfo, setPopUpInfo] = useState({ course: null, teachers: [] });
+  const [coverPage, setCoverPage] = useState("");
   useEffect(() => {
     if (popup) {
       
@@ -30,6 +32,15 @@ function CoursePopUp({ popup, setPopup, data }) {
 
     }
   }, [popup])
+  useEffect(()=>{
+    let tempData = new URLSearchParams()
+    tempData.set("ccode",popUpInfo(popup,data,"ccode"));
+    tempData.set("ctitle", popupInfo.course);
+    if(popupInfo.teachers.length>0) tempData.set("tname1", popupInfo.teachers[0])
+    if(popupInfo.teachers.length>1) tempData.set("tname2", popupInfo.teachers[1])
+    setCoverPage(tempData.toString())
+    
+  },[popupInfo])
   return (
     <>
       {popup &&
@@ -50,6 +61,12 @@ function CoursePopUp({ popup, setPopup, data }) {
                   <strong>Teacher:</strong> <br />
                   {popupInfo.teachers && popupInfo.teachers.map((v, k) => <>{k + 1}. {v}<br /></>)}
                   <strong>Raw:</strong> <br /> {popup} <br/>
+
+                  <div className='flex justify-between gap-5 mt-3'>
+                    <a target='_blank' href={"https://rafiz001.github.io/cover/#/assignment?"+coverPage} className='bg-teal-900/60 backdrop-blur-sm py-2 text-white rounded-2xl p-5 w-full flex items-center justify-center gap-1'>Assignment <PiArrowSquareOut /></a>
+                    <a target='_blank' href={"https://rafiz001.github.io/cover/#/labreport?"+coverPage} className='bg-teal-900/60 backdrop-blur-sm py-2 text-white rounded-2xl p-5 w-full flex items-center justify-center gap-1'>Lab Report <PiArrowSquareOut /></a>
+                    
+                  </div>
                 </div>
               </div>
 
